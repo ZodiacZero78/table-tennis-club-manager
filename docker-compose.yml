@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: table-tennis-postgres
+    environment:
+      POSTGRES_DB: tabletennis
+      POSTGRES_USER: clubadmin
+      POSTGRES_PASSWORD: clubpassword
+    ports:
+      - "5432:5432"
+      # 5432 is the default PostgreSQL port
+      # host port : container port
+      # Port 5432 on Windows PC -> Port 5432 inside the PostgreSQL container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
