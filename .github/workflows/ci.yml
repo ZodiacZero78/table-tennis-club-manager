@@ -1,0 +1,38 @@
+name: CI
+
+
+on:
+  # Run CI when pushing to main
+  push:
+    branches: [ "main" ]
+  # Run CI when creating a pull request targeting main
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Run the job on a temporary Linux machine
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Check out the repository onto the runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Install/Configure Java 21 on the machine
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          # Cache Maven dependencies so future builds run faster
+          cache: maven
+
+      # Run automated tests
+      - name: Run tests
+        run: ./mvnw test
+
+      # Build application into a JAR (skip tests because already run previously)
+      - name: Build application
+        run: ./mvnw package -DskipTests
