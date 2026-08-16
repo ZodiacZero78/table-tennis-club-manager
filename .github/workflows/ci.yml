@@ -14,6 +14,21 @@ jobs:
     # Run the job on a temporary Linux machine
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: tabletennis
+          POSTGRES_USER: clubadmin
+          POSTGRES_PASSWORD: clubpassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U clubadmin -d tabletennis"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
 
       # Check out the repository onto the runner
